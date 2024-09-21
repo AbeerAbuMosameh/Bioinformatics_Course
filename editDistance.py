@@ -23,18 +23,20 @@ def edit_distance(seq1, seq2):
                 dp[i][j] = dp[i - 1][j - 1]  # No operation needed (match)
                 track[i][j] = 0  # Diagonal arrow (no change)
             else:
-                insert = dp[i][j - 1] + 1  # Cost of insertion
-                delete = dp[i - 1][j] + 1  # Cost of deletion
+                insert = dp[i - 1][j] + 1  # Cost of insert "↓"
+                delete = dp[i][j - 1] + 1  # Cost of delete "→"
                 substitute = dp[i - 1][j - 1] + 1  # Cost of substitution
 
+                # Choose the operation with the least cost
                 dp[i][j] = min(insert, delete, substitute)
 
+                # Track the direction of the chosen operation
                 if dp[i][j] == insert:
-                    track[i][j] = 1  # Left arrow (insertion)
+                    track[i][j] = 2
                 elif dp[i][j] == delete:
-                    track[i][j] = 2  # Up arrow (deletion)
+                    track[i][j] = 1
                 else:
-                    track[i][j] = 3  # Diagonal arrow (substitution)
+                    track[i][j] = 3
 
     # Return both the DP table and the tracking table
     return dp, track
